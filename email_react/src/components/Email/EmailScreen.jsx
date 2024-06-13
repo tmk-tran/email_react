@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { parseCsv } from "./parseCsv"; // Import the parseCsv function
+import { v4 as uuidv4 } from "uuid"; // Import uuidv4 from uuid
+// ~~~~~~~~~~~ Components ~~~~~~~~~~~ //
 import EmailForm from "./AddEditTemplate";
 import "./EmailScreen.css";
 
 const EmailScreen = ({ csvData }) => {
   const [emails, setEmails] = useState([]);
+//   console.log(emails);
   const [editingEmailIndex, setEditingEmailIndex] = useState(null);
   const [isAdding, setIsAdding] = useState(false); // New state variable
 
   useEffect(() => {
     const parsedData = parseCsv(csvData); // Your function to parse CSV data
     const emailData = parsedData.slice(1).map((row, index) => ({
-      id: index, // Add unique identifier
-      email_type: row['email_type_fields_NDWBC_example.csv'],
+      id: uuidv4(), // Generate a unique identifier for each email
+      email_type: row["email_type_fields_NDWBC_example.csv"],
       template: row.__parsed_extra[0],
       subject: row.__parsed_extra[1],
       recipients: row.__parsed_extra[2],
