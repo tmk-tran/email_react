@@ -1,0 +1,19 @@
+.email-card {
+  border: 1px solid #ccc;
+  padding: 16px;
+  margin: 16px 0;
+  border-radius: 8px;
+}
+
+.email-card h2 {
+  margin-top: 0;
+}
+
+.email-card a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.email-card a:hover {
+  text-decoration: underline;
+}
