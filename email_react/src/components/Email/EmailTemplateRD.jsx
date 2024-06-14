@@ -44,7 +44,7 @@ const outputValuesTemplate = `email_type: {emailconf.email_type}, email: {record
 
 // Function to replace placeholders
 const replacePlaceholders = (template, data) => {
-  return template.replace(/\{([^\}]+)\}/g, (_, key) => {
+  return template.replace(/{([^}]+)}/g, (_, key) => {
     const keys = key.split('.');
     let value = data;
     for (const k of keys) {
