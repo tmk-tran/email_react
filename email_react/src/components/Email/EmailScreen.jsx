@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from "uuid"; // Import uuidv4 from uuid
 // ~~~~~~~~~~~ Components ~~~~~~~~~~~ //
 import EmailForm from "./AddEditTemplate";
 import "./EmailScreen.css";
+import EmailTemplateRD from "./EmailTemplateRD";
 
 const EmailScreen = ({ csvData }) => {
   const [emails, setEmails] = useState([]);
@@ -12,47 +13,47 @@ const EmailScreen = ({ csvData }) => {
   const [isAdding, setIsAdding] = useState(false); // New state variable
   const [emailTemplates, setEmailTemplates] = useState([]);
 
-  //   useEffect(() => {
-  //     const parsedData = parseCsv(csvData); // Your function to parse CSV data
-  //     const emailData = parsedData.slice(1).map((row, index) => ({
-  //       id: uuidv4(), // Generate a unique identifier for each email
-  //       email_type: row["email_type_fields_NDWBC_example.csv"],
-  //       template: row.__parsed_extra[0],
-  //       subject: row.__parsed_extra[1],
-  //       recipients: row.__parsed_extra[2],
-  //       sender: row.__parsed_extra[3],
-  //       output_values: row.__parsed_extra[4],
-  //       queries: row.__parsed_extra[5],
-  //       options: row.__parsed_extra[6],
-  //     }));
-  //     setEmails(emailData);
-  //   }, []);
+    // useEffect(() => {
+    //   const parsedData = parseCsv(csvData); // Your function to parse CSV data
+    //   const emailData = parsedData.slice(1).map((row, index) => ({
+    //     id: uuidv4(), // Generate a unique identifier for each email
+    //     email_type: row["email_type_fields_NDWBC_example.csv"],
+    //     template: row.__parsed_extra[0],
+    //     subject: row.__parsed_extra[1],
+    //     recipients: row.__parsed_extra[2],
+    //     sender: row.__parsed_extra[3],
+    //     output_values: row.__parsed_extra[4],
+    //     queries: row.__parsed_extra[5],
+    //     options: row.__parsed_extra[6],
+    //   }));
+    //   setEmails(emailData);
+    // }, []);
 
   useEffect(() => {
     const parsedData = parseCsv(csvData); // Parse the CSV data
     console.log(parsedData); // Debugging line to inspect the parsed data structure
 
     const emailData = parsedData.map((row, index) => {
-      // Parse the recipients string into an array
-      const recipients = JSON.parse(row["recipients"]);
-      console.log(recipients);
+    //   // Parse the recipients string into an array
+    //   const recipients = JSON.parse(row["recipients"]);
+    //   console.log(recipients);
 
-      // Replace placeholders for recipients
-      const processedRecipients = recipients.map((recipient) => {
-        return recipient.replace(
-          "{records['new']['email']}",
-          "testuser@example.com"
-        );
-      });
+    //   // Replace placeholders for recipients
+    //   const processedRecipients = recipients.map((recipient) => {
+    //     return recipient.replace(
+    //       "{records['new']['email']}",
+    //       "testuser@example.com"
+    //     );
+    //   });
 
-      console.log(processedRecipients);
+    //   console.log(processedRecipients);
 
       return {
         id: uuidv4(),
         email_type: row["email_type"],
         template: row["template"],
         subject: row["subject"],
-        recipients: processedRecipients,
+        recipients: row["recipients"],
         sender: row["sender"],
         output_values: row["output_values"],
         queries: row["queries"],
@@ -135,6 +136,7 @@ const EmailScreen = ({ csvData }) => {
               onCancel={() => setEditingEmailIndex(null)}
             />
           )}
+          {/* <EmailTemplateRD /> */}
         </div>
       ))}
     </div>
