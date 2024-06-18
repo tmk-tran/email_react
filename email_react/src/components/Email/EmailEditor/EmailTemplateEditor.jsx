@@ -132,7 +132,10 @@ const EmailTemplateEditor = () => {
             const templateHtml = html
               .replace(/{first_name}/g, "Mark")
               .replace(/{reset_link}/g, "www.google.com")
-              .replace(/{email}/g, "mark@example.com");
+              .replace(/{email}/g, "mark@example.com")
+              .replace(/{amount}/g, "$100")
+              .replace(/{date}/g, "07/17/2024")
+              .replace(/{transaction_id}/g, "12345");
             templates.push(templateHtml);
           }
           console.log("Templates:", templates);
@@ -195,13 +198,16 @@ const EmailTemplateEditor = () => {
         />
       )}
       {parsedEmailData && (
-        <div>
-          <h2>Preview Template</h2>
+        <div style={{ border: "1px solid red" }}>
+          <h1>Preview Templates:</h1>
           {/* <div
             dangerouslySetInnerHTML={{ __html: parsedEmailData.templateHtml }}
           /> */}
           {parsedEmailData.map((template, index) => (
+            <>
             <div key={index} dangerouslySetInnerHTML={{ __html: template }} />
+            <br />
+            </>
           ))}
         </div>
       )}
