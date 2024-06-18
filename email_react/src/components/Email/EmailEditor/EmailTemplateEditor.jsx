@@ -7,7 +7,7 @@ const EmailTemplateEditor = () => {
   console.log(emailEditorRef);
   const [parsedEmailData, setParsedEmailData] = useState(null);
   console.log(parsedEmailData);
-  const [theme, setTheme] = useState("light");
+  const [theme, setTheme] = useState("dark");
 
   const toggleTheme = () => {
     const newTheme = theme === "light" ? "dark" : "light";
@@ -50,10 +50,30 @@ const EmailTemplateEditor = () => {
   }, [parsedEmailData]);
 
   const exportHtml = () => {
-    emailEditorRef.exportHtml((data) => {
+    emailEditorRef.current.editor.exportHtml((data) => {
       const { design, html } = data;
-      console.log("Exported HTML", html);
       // Send the HTML to your email sending service
+      console.log("Exported HTML", html);
+      // Create a blob with the HTML content
+      const blob = new Blob([html], { type: "text/html" });
+
+      // Create a link element
+      const link = document.createElement("a");
+
+      // Set the download attribute with a filename
+      link.download = "exported_email.html";
+
+      // Create a URL for the blob and set it as the href attribute
+      link.href = window.URL.createObjectURL(blob);
+
+      // Append the link to the body
+      document.body.appendChild(link);
+
+      // Programmatically click the link to trigger the download
+      link.click();
+
+      // Remove the link from the document
+      document.body.removeChild(link);
     });
   };
 
@@ -76,6 +96,29 @@ const EmailTemplateEditor = () => {
       emailEditorRef.current.editor.saveDesign((design) => {
         console.log("Saved Design", design);
         // Save the design to your server or database
+        // Log the design JSON to the console
+        console.log(JSON.stringify(design, null, 2));
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+        // ~~~~~~~~~~~ This will be for sending to backend ~~~~~~~~~~~ //
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+        // Make a POST request to your backend to save the design
+        // fetch('https://your-api-endpoint.com/save-design', {
+        //   method: 'POST',
+        //   headers: {
+        //     'Content-Type': 'application/json',
+        //   },
+        //   body: JSON.stringify(design),
+        // })
+        //   .then(response => {
+        //     if (response.ok) {
+        //       console.log('Design saved successfully!');
+        //     } else {
+        //       console.error('Failed to save design:', response.statusText);
+        //     }
+        //   })
+        //   .catch(error => {
+        //     console.error('Error saving design:', error);
+        //   });
       });
     }
   };
@@ -116,7 +159,9 @@ const EmailTemplateEditor = () => {
   };
 
   const handleCSVUpload = (event) => {
-    const file = event.target.files[0];
+    // const file = event.target.files[0];
+    const fileInput = event.target;
+    const file = fileInput.files[0];
     console.log(file);
     Papa.parse(file, {
       header: true,
@@ -142,6 +187,9 @@ const EmailTemplateEditor = () => {
           setParsedEmailData(templates);
         } catch (error) {
           console.error("Error fetching email templates:", error);
+        } finally {
+          // Clear the file input value to allow the user to upload another file
+          fileInput.value = null;
         }
       },
     });
@@ -153,7 +201,9 @@ const EmailTemplateEditor = () => {
       <button onClick={exportHtml}>Export HTML</button>
       <input type="file" accept=".csv" onChange={handleCSVUpload} />
       <button onClick={() => setParsedEmailData(null)}>View Editor</button>
-      <button onClick={toggleTheme}>Toggle Theme</button>
+      <button onClick={toggleTheme}>
+        {theme === "dark" ? "Light Mode" : "Dark Mode"}
+      </button>
       {!parsedEmailData && (
         // Props here are necessary for react email-editor to function
         <EmailEditor
@@ -162,20 +212,9 @@ const EmailTemplateEditor = () => {
           onDesignLoad={onDesignLoad}
           onExport={onExport}
           onError={onError}
-          minHeight={600}
+          minHeight={700}
           options={{
             // Additional options here
-            customCSS: `
-      body {
-              background-color: ${
-                theme === "light" ? "#ffffff" : "#333333"
-              } !important;
-              color: ${theme === "light" ? "#333333" : "#ffffff"} !important;
-      }
-      .custom-class {
-        font-size: 20px;
-      }
-    `,
             tools: {
               // Customize tools
               heading: {
@@ -193,6 +232,10 @@ const EmailTemplateEditor = () => {
               //     dock: "left", // Dock tools panel to the left
               //   },
               // },
+              loader: {
+                html: '<div class="custom-spinner"><div class="spinner"></div></div>',
+                css: ".custom-spinner { display: flex; justify-content: center; align-items: center; height: 100%; } .spinner { border: 4px solid rgba(0, 0, 0, 0.1); border-left-color: #00A79D; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; } @keyframes spin { to { transform: rotate(360deg); } }",
+              },
             },
           }}
         />
@@ -205,8 +248,8 @@ const EmailTemplateEditor = () => {
           /> */}
           {parsedEmailData.map((template, index) => (
             <>
-            <div key={index} dangerouslySetInnerHTML={{ __html: template }} />
-            <br />
+              <div key={index} dangerouslySetInnerHTML={{ __html: template }} />
+              <br />
             </>
           ))}
         </div>
