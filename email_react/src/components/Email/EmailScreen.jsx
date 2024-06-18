@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from "uuid"; // Import uuidv4 from uuid
 import EmailForm from "./AddEditTemplate";
 import "./EmailScreen.css";
 import EmailTemplateRD from "./EmailTemplateRD";
+import MyEmailEditor from "./EmailEditor/EmailEditor";
 
 const EmailScreen = ({ csvData }) => {
   const [emails, setEmails] = useState([]);
@@ -139,6 +140,7 @@ const EmailScreen = ({ csvData }) => {
           {/* <EmailTemplateRD /> */}
         </div>
       ))}
+      <MyEmailEditor />
     </div>
   );
 };
