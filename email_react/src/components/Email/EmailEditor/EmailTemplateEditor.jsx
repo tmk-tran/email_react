@@ -7,6 +7,12 @@ const EmailTemplateEditor = () => {
   console.log(emailEditorRef);
   const [parsedEmailData, setParsedEmailData] = useState(null);
   console.log(parsedEmailData);
+  const [theme, setTheme] = useState("light");
+
+  const toggleTheme = () => {
+    const newTheme = theme === "light" ? "dark" : "light";
+    setTheme(newTheme);
+  };
 
   useEffect(() => {
     console.log(emailEditorRef);
@@ -99,23 +105,10 @@ const EmailTemplateEditor = () => {
     // Handle the design loaded event here.
   };
 
-  const onDesignSave = (data) => {
-    console.log("Design Saved", data);
-    // Handle the design save event here.
-  };
-
   const onExport = (data) => {
     const { design, html } = data;
     console.log("Exported HTML", html);
     // Handle the export event here.
-  };
-
-  const onSaveTemplate = (data) => {
-    console.log("Template Saved", data);
-  };
-
-  const onLoadTemplate = (data) => {
-    console.log("Template Loaded", data);
   };
 
   const onError = (error) => {
@@ -131,18 +124,21 @@ const EmailTemplateEditor = () => {
         const data = results.data;
         console.log(data);
         try {
-          const response = await fetch("/resetPasswordEmailTemplate.html");
-          const html = await response.text();
-          data.forEach((row) => {
+          const templates = [];
+          for (const row of data) {
+            const response = await fetch(row.template);
+            const html = await response.text();
+            // Replace with actual values, placeholders ATM
             const templateHtml = html
               .replace(/{first_name}/g, "Mark")
-              .replace(/{reset_link}/g, "www.google.com");
-            console.log("Template HTML:", templateHtml);
-            setParsedEmailData({ templateHtml });
-            console.log("Parsed Email Data:", parsedEmailData);
-          });
+              .replace(/{reset_link}/g, "www.google.com")
+              .replace(/{email}/g, "mark@example.com");
+            templates.push(templateHtml);
+          }
+          console.log("Templates:", templates);
+          setParsedEmailData(templates);
         } catch (error) {
-          console.error("Error fetching email template:", error);
+          console.error("Error fetching email templates:", error);
         }
       },
     });
@@ -153,29 +149,60 @@ const EmailTemplateEditor = () => {
       <button onClick={saveDesign}>Save Design</button>
       <button onClick={exportHtml}>Export HTML</button>
       <input type="file" accept=".csv" onChange={handleCSVUpload} />
+      <button onClick={() => setParsedEmailData(null)}>View Editor</button>
+      <button onClick={toggleTheme}>Toggle Theme</button>
       {!parsedEmailData && (
+        // Props here are necessary for react email-editor to function
         <EmailEditor
           ref={(editor) => (emailEditorRef.current = editor)}
           onLoad={onLoad}
           onDesignLoad={onDesignLoad}
-          onDesignSave={onDesignSave}
-          onSaveTemplate={onSaveTemplate}
-          onLoadTemplate={onLoadTemplate}
+          onExport={onExport}
           onError={onError}
           minHeight={600}
-          options={
-            {
-              // Additional options here
-            }
-          }
+          options={{
+            // Additional options here
+            customCSS: `
+      body {
+              background-color: ${
+                theme === "light" ? "#ffffff" : "#333333"
+              } !important;
+              color: ${theme === "light" ? "#333333" : "#ffffff"} !important;
+      }
+      .custom-class {
+        font-size: 20px;
+      }
+    `,
+            tools: {
+              // Customize tools
+              heading: {
+                properties: {
+                  text: {
+                    value: "Custom Heading",
+                  },
+                },
+              },
+            },
+            appearance: {
+              theme: theme, // Change theme light <--> dark
+              // panels: {
+              //   tools: {
+              //     dock: "left", // Dock tools panel to the left
+              //   },
+              // },
+            },
+          }}
         />
       )}
       {parsedEmailData && (
         <div>
           <h2>Preview Template</h2>
-          <div
+          {/* <div
             dangerouslySetInnerHTML={{ __html: parsedEmailData.templateHtml }}
-          />
+          /> */}
+          {parsedEmailData.map((template, index) => (
+            <div key={index} dangerouslySetInnerHTML={{ __html: template }} />
+          ))}
         </div>
       )}
     </div>
