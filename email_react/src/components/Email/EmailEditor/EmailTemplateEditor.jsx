@@ -198,7 +198,7 @@ const EmailTemplateEditor = () => {
         />
       )}
       {parsedEmailData && (
-        <div style={{ border: "1px solid red" }}>
+        <div>
           <h1>Preview Templates:</h1>
           {/* <div
             dangerouslySetInnerHTML={{ __html: parsedEmailData.templateHtml }}

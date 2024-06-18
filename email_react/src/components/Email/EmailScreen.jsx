@@ -4,7 +4,6 @@ import { v4 as uuidv4 } from "uuid"; // Import uuidv4 from uuid
 // ~~~~~~~~~~~ Components ~~~~~~~~~~~ //
 import EmailForm from "./AddEditTemplate";
 import "./EmailScreen.css";
-import EmailTemplateRD from "./EmailTemplateRD";
 import EmailTemplateEditor from "./EmailEditor/EmailTemplateEditor";
 
 const EmailScreen = ({ csvData }) => {
@@ -137,7 +136,6 @@ const EmailScreen = ({ csvData }) => {
               onCancel={() => setEditingEmailIndex(null)}
             />
           )}
-          {/* <EmailTemplateRD /> */}
         </div>
       ))}
       <EmailTemplateEditor />
