@@ -200,7 +200,9 @@ const EmailTemplateEditor = () => {
       <button onClick={saveDesign}>Save Design</button>
       <button onClick={exportHtml}>Export HTML</button>
       <input type="file" accept=".csv" onChange={handleCSVUpload} />
-      <button onClick={() => setParsedEmailData(null)}>View Editor</button>
+      {parsedEmailData && (
+        <button onClick={() => setParsedEmailData(null)}>View Editor</button>
+      )}
       <button onClick={toggleTheme}>
         {theme === "dark" ? "Light Mode" : "Dark Mode"}
       </button>
