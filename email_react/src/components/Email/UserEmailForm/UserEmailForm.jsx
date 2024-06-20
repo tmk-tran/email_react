@@ -8,6 +8,7 @@ import {
   InputLabel,
   Box,
 } from "@mui/material";
+import { flexColumn, borderRed } from "../../Utils/styles";
 
 const EmailForm = () => {
   const [emailType, setEmailType] = useState("");
@@ -32,7 +33,7 @@ const EmailForm = () => {
     <Box
       component="form"
       onSubmit={handleSubmit}
-      sx={{ display: "flex", flexDirection: "column", gap: 2, width: 400 }}
+      sx={{ ...flexColumn, gap: 2, width: 400, ...borderRed }}
     >
       <FormControl fullWidth>
         <InputLabel id="email-type-label">Email Type</InputLabel>
