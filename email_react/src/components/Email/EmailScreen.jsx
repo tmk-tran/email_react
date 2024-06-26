@@ -114,10 +114,15 @@ const EmailScreen = ({ csvData }) => {
           <div key={email.id} className="email-card">
             <h2>{email.subject}</h2>
             <p>
-              <strong>Type:</strong> {email.email_type}
+              <strong>
+                <span style={{ color: "#00A79D" }}>Type:</span>
+              </strong>{" "}
+              {email.email_type}
             </p>
             <p>
-              <strong>Template:</strong>{" "}
+              <strong>
+                <span style={{ color: "#00A79D" }}>Template:</span>
+              </strong>{" "}
               <a
                 href={email.template}
                 target="_blank"
@@ -127,19 +132,34 @@ const EmailScreen = ({ csvData }) => {
               </a>
             </p>
             <p>
-              <strong>Recipients:</strong> {email.recipients}
+              <strong>
+                <span style={{ color: "#00A79D" }}>Recipients:</span>
+              </strong>{" "}
+              {email.recipients}
             </p>
             <p>
-              <strong>Sender:</strong> {email.sender}
+              <strong>
+                <span style={{ color: "#00A79D" }}>Sender:</span>
+              </strong>{" "}
+              {email.sender}
             </p>
             <p>
-              <strong>Output Values:</strong> {email.output_values}
+              <strong>
+                <span style={{ color: "#00A79D" }}>Output Values:</span>
+              </strong>{" "}
+              {email.output_values}
             </p>
             <p>
-              <strong>Queries:</strong> {email.queries}
+              <strong>
+                <span style={{ color: "#00A79D" }}>Queries:</span>
+              </strong>{" "}
+              {email.queries}
             </p>
             <p>
-              <strong>Options:</strong> {email.options}
+              <strong>
+                <span style={{ color: "#00A79D" }}>Options:</span>
+              </strong>{" "}
+              {email.options}
             </p>
             <button onClick={() => handleEdit(index)}>Edit</button>
             <button onClick={() => handleDelete(index)}>Delete</button>

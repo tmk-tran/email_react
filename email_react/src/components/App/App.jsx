@@ -12,7 +12,7 @@ function App() {
       <CssBaseline /> {/* Normalize CSS across browsers */}
       <GlobalStyles
         styles={{
-          body: { backgroundColor: "#f0f0f0" }, // Custom global styles
+          body: { backgroundColor: "#060A2D", color: "#F4F5FD" }, // Custom global styles
         }}
       />
       <div className="App">
