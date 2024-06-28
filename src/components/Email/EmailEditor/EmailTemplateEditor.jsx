@@ -214,7 +214,7 @@ const EmailTemplateEditor = () => {
           onDesignLoad={onDesignLoad}
           onExport={onExport}
           onError={onError}
-          minHeight={700}
+          minHeight={900}
           options={{
             // Additional options here
             tools: {

@@ -15,6 +15,7 @@ const EmailForm = ({ email, onSave, onCancel }) => {
 
   return (
     <form onSubmit={handleSubmit}>
+      <div style={{ display: "flex", flexDirection: "column" }}>
       <label>
         Subject:
         <input
@@ -88,6 +89,7 @@ const EmailForm = ({ email, onSave, onCancel }) => {
       <button type="button" onClick={onCancel}>
         Cancel
       </button>
+      </div>
     </form>
   );
 };
